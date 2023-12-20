@@ -1,0 +1,10 @@
+Ver 1.0
+-search for videos.
+-download any video.
+-convert any video to mp3 and download the mp3 file.
+-make a list of videos and download/ convert download all.
+----
+
+Ver 2.0
+-get playlist from spotify.
+-search for videos from spotify playlist, get the videos and convert download them.
