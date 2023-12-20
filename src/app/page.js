@@ -1,6 +1,6 @@
 "use client";
-
 import { useEffect, useState } from "react";
+import Search from "@/util/Search";
 
 async function getSearchResults(videoTitle) {
   const options = {
@@ -17,13 +17,13 @@ async function getSearchResults(videoTitle) {
 }
 
 export default function Home() {
+  const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    getSearchResults("live laugh love").then((videos) =>
-      setSearchResults(videos.items)
-    );
-  }, []);
+    search &&
+      getSearchResults(search).then((videos) => setSearchResults(videos.items));
+  }, [search]);
 
   const videoCards = searchResults.map((video) => {
     return (
@@ -44,9 +44,10 @@ export default function Home() {
       </div>
     );
   });
-
+  // onSearchClick={setSearch}
   return (
     <div className="">
+      <Search onSearchClick={setSearch} />
       <div className="flex flex-row flex-wrap w-full p-5 justify-center gap-10">
         {videoCards}
       </div>
