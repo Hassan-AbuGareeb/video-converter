@@ -12,14 +12,6 @@ export default function Home() {
       getSearchResults(search).then((videos) => setSearchResults(videos.items));
   }, [search]);
 
-  useEffect(() => {
-    console.log(
-      fetch("http://localhost:3002/")
-        .then((resp) => resp.json())
-        .then((data) => console.log(data.message))
-    );
-  }, []);
-
   const videoCards = searchResults.map((video) => {
     return (
       <div
@@ -37,7 +29,10 @@ export default function Home() {
           </h5>
           <div className="flex flex-wrap gap-x-5 justify-center py-3">
             <Button buttonText={"Download"} callBack={downloadFile} />
-            <Button buttonText={"Convert to MP3"} callBack={convertVideo} />
+            <Button
+              buttonText={"Download MP3"}
+              callBack={() => convertVideo(video.id.videoId)}
+            />
           </div>
         </div>
       </div>
@@ -61,7 +56,7 @@ async function getSearchResults(videoTitle) {
     },
   };
   const searchResultsResponse = await fetch(
-    `https://www.googleapis.com/youtube/v3/search?key=AIzaSyAVUpF36gRO-H4bRwq5o4kRb9AFotteCKE&q=${videoTitle}&type=video&part=snippet&maxResults=5&videoDuration=short`,
+    `https://www.googleapis.com/youtube/v3/search?key=AIzaSyAVUpF36gRO-H4bRwq5o4kRb9AFotteCKE&q=${videoTitle}&type=video&part=snippet&maxResults=5&videoDuration=any&videoCategoryId=10`,
     options
   );
   const searchResultsData = await searchResultsResponse.json();
@@ -70,4 +65,8 @@ async function getSearchResults(videoTitle) {
 
 function downloadFile() {}
 
-function convertVideo() {}
+async function convertVideo(videoId) {
+  const convertResponse = await fetch(`http://localhost:3002/${videoId}`);
+  const convertData = await convertResponse.json();
+  alert(convertData.message);
+}
