@@ -12,6 +12,14 @@ export default function Home() {
       getSearchResults(search).then((videos) => setSearchResults(videos.items));
   }, [search]);
 
+  useEffect(() => {
+    console.log(
+      fetch("http://localhost:3002/")
+        .then((resp) => resp.json())
+        .then((data) => console.log(data.message))
+    );
+  }, []);
+
   const videoCards = searchResults.map((video) => {
     return (
       <div
