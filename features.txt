@@ -1,5 +1,7 @@
 Ver 1.0
 -search for videos.
+    -add modifiers, video duration, number of resutls
+-refactor the cards and move them to a separate component
 -download any video.
 -convert any video to mp3 and download the mp3 file.
 -make a list of videos and download/ convert download all.
