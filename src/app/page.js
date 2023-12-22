@@ -27,7 +27,7 @@ export default function Home() {
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">
             {video.snippet.title}
           </h5>
-          <div className="flex flex-wrap gap-x-5 justify-center py-3">
+          <div className="flex flex-wrap justify-center py-3">
             <Button
               buttonText={"Download MP3"}
               callBack={() =>
