@@ -28,10 +28,11 @@ export default function Home() {
             {video.snippet.title}
           </h5>
           <div className="flex flex-wrap gap-x-5 justify-center py-3">
-            <Button buttonText={"Download"} callBack={downloadFile} />
             <Button
               buttonText={"Download MP3"}
-              callBack={() => convertVideo(video.id.videoId)}
+              callBack={() =>
+                convertVideo(video.id.videoId, video.snippet.title)
+              }
             />
           </div>
         </div>
@@ -63,10 +64,24 @@ async function getSearchResults(videoTitle) {
   return searchResultsData;
 }
 
-function downloadFile() {}
+async function convertVideo(videoId, videoName) {
+  try {
+    const convertResponse = await fetch(`http://localhost:3003/${videoId}`);
+    const convertData = await convertResponse.blob();
 
-async function convertVideo(videoId) {
-  const convertResponse = await fetch(`http://localhost:3002/${videoId}`);
-  const convertData = await convertResponse.json();
-  alert(convertData.message);
+    if (convertResponse.ok) {
+      const url = window.URL.createObjectURL(convertData);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${videoName}.mp3`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } else {
+      alert("Error converting video");
+    }
+  } catch (error) {
+    console.error("Error converting video", error);
+  }
 }

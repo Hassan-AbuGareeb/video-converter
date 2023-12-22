@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const PORT = 3002;
+const PORT = 3003;
 const cors = require("cors");
 app.use(cors());
 
@@ -14,7 +14,6 @@ app.get("/", (req, res) => {
 
 app.get("/:id", (req, res) => {
   const videoId = req.params.id;
-  const destinationPath = "../../../../../mnt/c/Users/Home/Desktop/Downloads/";
   // get video info from youtube
   ytdl
     .getInfo(videoId)
@@ -24,7 +23,7 @@ app.get("/:id", (req, res) => {
         quality: "highestaudio",
       });
       //create a write stream to save the video file
-      const outputFilePath = `../../../../../mnt/c/Users/Home/Desktop/Downloads/${info.videoDetails.title}.${format.container}`;
+      const outputFilePath = `${info.videoDetails.title}.${format.container}`;
       const outputStream = fs.createWriteStream(`${outputFilePath}`);
       //download video file
       ytdl
@@ -34,19 +33,22 @@ app.get("/:id", (req, res) => {
         .pipe(outputStream);
       //when download finishes shows a message
       outputStream.on("finish", () => {
+        const stat = fs.statSync(
+          `${info.videoDetails.title}.${format.container}`
+        );
         res.status(200);
-        res.setHeader("Content-Type", "application/json");
+        res.setHeader("Content-Type", "audio/mpeg");
+        res.setHeader("Content-Length", stat.size);
         res.setHeader(
           "Content-Disposition",
-          `attachment; filename=${info.videoDetails.title}.json`
+          `attachment; filename=${info.videoDetails.title}.mp3`
         );
-        res.json({
-          message: `finished downloading ${info.videoDetails.title}`,
-        });
+        fs.createReadStream(outputFilePath).pipe(res);
       });
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).json({ message: "Error converting video" });
     });
 });
 
