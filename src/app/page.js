@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import Search from "@/util/Search";
-import Button from "@/util/Button";
 
 export default function Home() {
   const [search, setSearch] = useState("");
