@@ -22,7 +22,7 @@ const Search = ({ onSearchClick }) => {
         onChange={handleSearchChange}
       />
       <button
-        className="text-slate-300 ml-4 bg-slate-700 rounded-md font-semibold px-3 py-1"
+        className="text-slate-300 ml-4 bg-slate-600 rounded-md font-semibold px-3 py-1 hover:bg-slate-700"
         onClick={handleSearchClick}
       >
         Search

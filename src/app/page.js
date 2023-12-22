@@ -3,37 +3,47 @@ import { useEffect, useState } from "react";
 import Search from "@/util/Search";
 
 export default function Home() {
+  //search entered by user
   const [search, setSearch] = useState("");
+  //search results from the api
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
+    //fetch only if the search contains any value
     search &&
       getSearchResults(search).then((videos) => setSearchResults(videos.items));
   }, [search]);
 
   const videoCards = searchResults.map((video) => {
+    const videoId = video.id.videoId;
+    const videoTitle = video.snippet.title;
     return (
       <div
-        key={video.id.videoId}
-        className="flex felx-col flex-wrap justify-center w-[300px] p-2 bg-slate-500 border border-teal-500 rounded-lg shadow"
+        key={videoId}
+        className="flex felx-col flex-wrap justify-center w-[350px] p-2 bg-slate-500 border border-teal-500 rounded-lg shadow"
       >
+        {/* display the fetched video */}
         <iframe
-          src={`https://www.youtube.com/embed/${video.id.videoId}`}
+          src={`https://www.youtube.com/embed/${videoId}`}
           allowFullScreen={true}
-          className="rounded-lg w-full h-48"
+          className="rounded-lg w-80 h-48"
         />
         <div className="px-auto py-2 text-center">
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">
-            {video.snippet.title}
+            {videoTitle}
           </h5>
-          <div className="flex flex-wrap justify-center py-3">
+          <div className="flex flex-wrap gap-x-5 justify-center py-3">
             <button
-              onClick={() =>
-                convertVideo(video.id.videoId, video.snippet.title)
-              }
-              className="text-slate-300  bg-slate-800 rounded-md font-semibold px-3 py-1"
+              onClick={() => getvideoMp3File(videoId, videoTitle)}
+              className="text-slate-300  bg-slate-700 rounded-md font-semibold px-3 py-1 hover:bg-slate-800"
             >
               Download MP3
+            </button>
+            <button
+              onClick={() => addToList()}
+              className="text-slate-300  bg-slate-700 rounded-md font-semibold px-3 py-1 hover:bg-slate-800"
+            >
+              Add to download list
             </button>
           </div>
         </div>
@@ -65,19 +75,22 @@ async function getSearchResults(videoTitle) {
   return searchResultsData;
 }
 
-async function convertVideo(videoId, videoName) {
+async function getvideoMp3File(videoId, videoName) {
   try {
-    const convertResponse = await fetch(`http://localhost:3003/${videoId}`);
-    const convertData = await convertResponse.blob();
+    const mp3FileResp = await fetch(`http://localhost:3003/${videoId}`);
+    const mp3FileData = await convertResponse.blob();
 
-    if (convertResponse.ok) {
-      const url = window.URL.createObjectURL(convertData);
+    if (mp3FileResp.ok) {
+      //search for this thing
+      const url = window.URL.createObjectURL(mp3FileData);
+      //create an anchor tag, assign it the url and download path, and click it.
       const a = document.createElement("a");
       a.href = url;
       a.download = `${videoName}.mp3`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+      //search for this thing too
       window.URL.revokeObjectURL(url);
     } else {
       alert("Error converting video");
@@ -86,3 +99,5 @@ async function convertVideo(videoId, videoName) {
     console.error("Error converting video", error);
   }
 }
+
+function addToList() {}
