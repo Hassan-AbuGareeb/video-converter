@@ -22,8 +22,10 @@ app.get("/:id", (req, res) => {
       const format = ytdl.chooseFormat(info.formats, {
         quality: "highestaudio",
       });
+      const fileExtension = format.container;
+      const videoTitle = info.videoDetails.title;
       //create a write stream to save the video file
-      const outputFilePath = `${info.videoDetails.title}.${format.container}`;
+      const outputFilePath = `${videoTitle}.${fileExtension}`;
       const outputStream = fs.createWriteStream(`${outputFilePath}`);
       //download video file
       ytdl
@@ -33,16 +35,15 @@ app.get("/:id", (req, res) => {
         .pipe(outputStream);
       //when download finishes shows a message
       outputStream.on("finish", () => {
-        const stat = fs.statSync(
-          `${info.videoDetails.title}.${format.container}`
-        );
+        const stat = fs.statSync(`${outputFilePath}`);
         res.status(200);
         res.setHeader("Content-Type", "audio/mpeg");
         res.setHeader("Content-Length", stat.size);
         res.setHeader(
           "Content-Disposition",
-          `attachment; filename=${info.videoDetails.title}.mp3`
+          `attachment; filename=${videoTitle}.mp3`
         );
+        //send the file to front end to download it from browser
         fs.createReadStream(outputFilePath).pipe(res);
       });
     })
