@@ -68,9 +68,7 @@ async function getSearchResults(videoTitle) {
 
 async function convertVideo(videoId, videoName) {
   try {
-    const convertResponse = await fetch(
-      `/.netlify/functions/server/${videoId}`
-    );
+    const convertResponse = await fetch(`http://localhost:3003/${videoId}`);
     const convertData = await convertResponse.blob();
 
     if (convertResponse.ok) {
