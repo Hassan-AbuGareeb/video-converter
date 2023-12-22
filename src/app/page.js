@@ -28,12 +28,14 @@ export default function Home() {
             {video.snippet.title}
           </h5>
           <div className="flex flex-wrap justify-center py-3">
-            <Button
-              buttonText={"Download MP3"}
-              callBack={() =>
+            <button
+              onClick={() =>
                 convertVideo(video.id.videoId, video.snippet.title)
               }
-            />
+              className="text-slate-300  bg-slate-800 rounded-md font-semibold px-3 py-1"
+            >
+              Download MP3
+            </button>
           </div>
         </div>
       </div>
