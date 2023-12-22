@@ -12,14 +12,6 @@ export default function Home() {
       getSearchResults(search).then((videos) => setSearchResults(videos.items));
   }, [search]);
 
-  useEffect(() => {
-    console.log(
-      fetch("http://localhost:3002/")
-        .then((resp) => resp.json())
-        .then((data) => console.log(data.message))
-    );
-  }, []);
-
   const videoCards = searchResults.map((video) => {
     return (
       <div
@@ -35,9 +27,15 @@ export default function Home() {
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">
             {video.snippet.title}
           </h5>
-          <div className="flex flex-wrap gap-x-5 justify-center py-3">
-            <Button buttonText={"Download"} callBack={downloadFile} />
-            <Button buttonText={"Convert to MP3"} callBack={convertVideo} />
+          <div className="flex flex-wrap justify-center py-3">
+            <button
+              onClick={() =>
+                convertVideo(video.id.videoId, video.snippet.title)
+              }
+              className="text-slate-300  bg-slate-800 rounded-md font-semibold px-3 py-1"
+            >
+              Download MP3
+            </button>
           </div>
         </div>
       </div>
@@ -61,13 +59,31 @@ async function getSearchResults(videoTitle) {
     },
   };
   const searchResultsResponse = await fetch(
-    `https://www.googleapis.com/youtube/v3/search?key=AIzaSyAVUpF36gRO-H4bRwq5o4kRb9AFotteCKE&q=${videoTitle}&type=video&part=snippet&maxResults=5&videoDuration=short`,
+    `https://www.googleapis.com/youtube/v3/search?key=AIzaSyAVUpF36gRO-H4bRwq5o4kRb9AFotteCKE&q=${videoTitle}&type=video&part=snippet&maxResults=5&videoDuration=any&videoCategoryId=10`,
     options
   );
   const searchResultsData = await searchResultsResponse.json();
   return searchResultsData;
 }
 
-function downloadFile() {}
+async function convertVideo(videoId, videoName) {
+  try {
+    const convertResponse = await fetch(`http://localhost:3003/${videoId}`);
+    const convertData = await convertResponse.blob();
 
-function convertVideo() {}
+    if (convertResponse.ok) {
+      const url = window.URL.createObjectURL(convertData);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${videoName}.mp3`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } else {
+      alert("Error converting video");
+    }
+  } catch (error) {
+    console.error("Error converting video", error);
+  }
+}
