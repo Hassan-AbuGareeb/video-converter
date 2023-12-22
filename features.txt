@@ -6,7 +6,7 @@ Ver 1.0
     -download any video.
     -convert any video to mp3 and download the mp3 file.
         -search for a way to combine audio and video, send a param with each request on a button to decide what to download.
-        -search for how to get the downloads path of the end user.
+        -search for how to put the deployment service server address
 -make a list of videos and download/ convert download all.
 ----
 
