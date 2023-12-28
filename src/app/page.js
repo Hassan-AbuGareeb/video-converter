@@ -80,7 +80,9 @@ async function getSearchResults(videoTitle) {
 
 async function getVideoMp3File(videoId, videoName) {
   try {
-    const mp3FileResp = await fetch(`http://localhost:3002/${videoId}`);
+    const mp3FileResp = await fetch(
+      `https://video-converter-backend-production.up.railway.app/${videoId}`
+    );
     const mp3FileData = await mp3FileResp.blob();
     console.log;
     if (mp3FileResp.ok) {
