@@ -34,7 +34,7 @@ export default function Home() {
           </h5>
           <div className="flex flex-wrap gap-x-5 justify-center py-3">
             <button
-              onClick={() => getvideoMp3File(videoId, videoTitle)}
+              onClick={() => getVideoMp3File(videoId, videoTitle)}
               className="text-slate-300  bg-slate-700 rounded-md font-semibold px-3 py-1 hover:bg-slate-800"
             >
               Download MP3
@@ -54,8 +54,11 @@ export default function Home() {
   return (
     <div className="">
       <Search onSearchClick={setSearch} />
-      <div className="flex flex-row flex-wrap w-full p-5 justify-center gap-10">
-        {videoCards}
+      <div className="flex flex-row flex-wrap p-5 justify-between gap-5">
+        <div className="flex flex-row flex-wrap w-full p-5 justify-center gap-10">
+          {videoCards}
+        </div>
+        {/* <div>hello</div> */}
       </div>
     </div>
   );
@@ -75,11 +78,11 @@ async function getSearchResults(videoTitle) {
   return searchResultsData;
 }
 
-async function getvideoMp3File(videoId, videoName) {
+async function getVideoMp3File(videoId, videoName) {
   try {
-    const mp3FileResp = await fetch(`http://localhost:3003/${videoId}`);
-    const mp3FileData = await convertResponse.blob();
-
+    const mp3FileResp = await fetch(`http://localhost:3002/${videoId}`);
+    const mp3FileData = await mp3FileResp.blob();
+    console.log;
     if (mp3FileResp.ok) {
       //search for this thing
       const url = window.URL.createObjectURL(mp3FileData);
