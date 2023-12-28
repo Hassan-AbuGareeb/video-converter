@@ -2,9 +2,8 @@ Ver 1.0
 -refactor the cards and move them to a separate component.// do this when styling 
 -refactor the search component into a form.
 -make a feature: if the user inserts a youtube link and presses search, download the video directly.
-    -download any video.
+        -download any video.
         -search for a way to combine audio and video, send a param with each request on a button to decide what to download.
-        -search for how to put the deployment service server address
 -make a list of videos and download/ convert download all.
 ----
 
