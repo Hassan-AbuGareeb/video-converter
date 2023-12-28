@@ -8,6 +8,9 @@ export default function Home() {
   //search results from the api
   const [searchResults, setSearchResults] = useState([]);
 
+  //download list states
+  const [showDownloadList, setShowDownloadList] = useState(false);
+
   useEffect(() => {
     //fetch only if the search contains any value
     search &&
@@ -20,15 +23,15 @@ export default function Home() {
     return (
       <div
         key={videoId}
-        className="flex felx-col flex-wrap justify-center w-[350px] p-2 bg-slate-500 border border-teal-500 rounded-lg shadow"
+        className="flex felx-col flex-wrap justify-center w-[350px] p-2 bg-slate-500 rounded-lg shadow-lg shadow-violet-700/50"
       >
         {/* display the fetched video */}
         <iframe
           src={`https://www.youtube.com/embed/${videoId}`}
           allowFullScreen={true}
-          className="rounded-lg w-80 h-48"
+          className="rounded-lg w-80 h-48 border border-slate-400 "
         />
-        <div className="px-auto py-2 text-center">
+        <div className="px-auto py-2 text-center flex flex-col justify-between">
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">
             {videoTitle}
           </h5>
@@ -41,7 +44,7 @@ export default function Home() {
             </button>
             <button
               onClick={() => addToList()}
-              className="text-slate-300  bg-slate-700 rounded-md font-semibold px-3 py-1 hover:bg-slate-800"
+              className="text-slate-300 bg-slate-700 rounded-md font-semibold px-3 py-1 hover:bg-slate-800"
             >
               Add to download list
             </button>
@@ -51,14 +54,36 @@ export default function Home() {
     );
   });
 
+  const downloadsListCards = 0;
+
   return (
     <div className="">
+      <button
+        className=" bg-white"
+        onClick={() => {
+          setShowDownloadList(!showDownloadList);
+        }}
+      >
+        show list
+      </button>
       <Search onSearchClick={setSearch} />
-      <div className="flex flex-row flex-wrap p-5 justify-between gap-5">
-        <div className="flex flex-row flex-wrap w-full p-5 justify-center gap-10">
+      <div className="flex flex-row flex-wrap p-4 justify-between">
+        <div
+          className={`flex flex-row flex-wrap 
+          w-[${
+            showDownloadList ? "900px" : "100%"
+          }] py-5 justify-center gap-10`}
+        >
           {videoCards}
         </div>
-        {/* <div>hello</div> */}
+        {showDownloadList && (
+          <div className="bg-slate-300 rounded-lg w-[350px] mr-9 px-4 py-4 ">
+            <button className="text-slate-300  bg-slate-700 rounded-md font-semibold px-3 py-1 hover:bg-slate-800">
+              Download All
+            </button>
+            <div className="bg-slate-600 w-full h-20 my-4 flex flex-col"> </div>
+          </div>
+        )}
       </div>
     </div>
   );
