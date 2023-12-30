@@ -1,14 +1,7 @@
 Ver 1.0
-    -add modifiers, video duration, number of resutls
 -refactor the cards and move them to a separate component.// do this when styling 
-    -buttons animation
-    -download any video.
-    -convert any video to mp3 and download the mp3 file.
-        -search for a way to combine audio and video, send a param with each request on a button to decide what to download.
-        -search for how to put the deployment service server address
--make a list of videos and download/ convert download all.
+-make a feature: if the user inserts a youtube link and presses search, download the audio directly.
 ----
-
 Ver 2.0
 -get playlist from spotify.
 -search for videos from spotify playlist, get the videos and convert download them.
