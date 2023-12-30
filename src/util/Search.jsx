@@ -8,25 +8,27 @@ const Search = ({ onSearchClick }) => {
     setLocalSearch(event.target.value);
   }
 
-  function handleSearchClick() {
+  function handleSearchSubmit(e) {
+    e.preventDefault();
     onSearchClick(localSearch);
   }
 
   return (
     <div className="flex justify-center my-5">
-      <input
-        type="text"
-        placeholder="Search..."
-        className="px-2 rounded-sm "
-        value={localSearch}
-        onChange={handleSearchChange}
-      />
-      <button
-        className="text-slate-300 ml-4 bg-slate-600 rounded-md font-semibold px-3 py-1 hover:bg-slate-700"
-        onClick={handleSearchClick}
-      >
-        Search
-      </button>
+      <form onSubmit={handleSearchSubmit}>
+        <input
+          type="text"
+          placeholder="Search..."
+          className="px-2 rounded-sm "
+          value={localSearch}
+          onChange={handleSearchChange}
+        />
+        <input
+          type="submit"
+          className="text-slate-300 ml-4 bg-slate-600 rounded-md font-semibold px-3 py-1 hover:bg-slate-700"
+          value={"search"}
+        />
+      </form>
     </div>
   );
 };
