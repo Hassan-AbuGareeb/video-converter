@@ -178,7 +178,7 @@ async function getVideoMp3File(videoId, videoName) {
   try {
     //send get request to the backend
     const mp3FileResp = await fetch(
-      `https://video-converter-backend-production-1892.up.railway.app/${videoId}`
+      `https://video-converter-backend-production.up.railway.app/${videoId}`
     );
     //search for the blob thingy
     const mp3FileData = await mp3FileResp.blob();

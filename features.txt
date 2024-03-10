@@ -1,4 +1,5 @@
 Ver 1.0
+-generate an api key and add it to the req if the user doesn't have one
 -refactor the cards and move them to a separate component.// do this when styling 
 -do styling
 -make a feature: if the user inserts a youtube link and presses search, download the audio directly.
