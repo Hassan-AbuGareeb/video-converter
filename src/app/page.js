@@ -20,7 +20,7 @@ export default function Home() {
   function addToList(videoId, videoName, thumbnail) {
     for (const vid of downloadsList) {
       //if the video exists in the download list show an alert an abort the addition operation
-      if (vid.videoName === videoName) {
+      if (vid.videoId === videoId) {
         alert("video already exists");
         return;
       }
@@ -118,7 +118,7 @@ export default function Home() {
 
   return (
     <div className="">
-      <Search onSearchClick={setSearch} />
+      <Search onSearchClick={setSearch} placeholderValue={"Search..."} />
       <div className="flex flex-row p-4 justify-between">
         {/* video cards container */}
         <div
@@ -178,7 +178,12 @@ async function getVideoMp3File(videoId, videoName) {
   try {
     //send get request to the backend
     const mp3FileResp = await fetch(
-      `https://video-converter-backend-production-b841.up.railway.app/${videoId}`
+      `https://video-converter-backend-production.up.railway.app/${videoId}`,
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
     );
     //search for the blob thingy
     const mp3FileData = await mp3FileResp.blob();
